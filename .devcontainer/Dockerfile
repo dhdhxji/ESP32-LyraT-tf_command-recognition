@@ -35,6 +35,14 @@ ENV ADF_REL=v2.4.1
 RUN git clone --recursive --depth 1 --branch $ADF_REL https://github.com/espressif/esp-adf.git /opt/esp/adf
 ENV ADF_PATH=/opt/esp/adf
 
+RUN mkdir /components
+RUN cd /components && git clone https://github.com/espressif/esp-nn.git
+RUN cd /components/esp-nn && git checkout b219491494325c8130ae0aecac4b11ed6bf79885
+
+RUN cd /tmp && git clone https://github.com/espressif/tflite-micro-esp-examples.git
+RUN cd /tmp/tflite-micro-esp-examples && git checkout e6e9001b45c0e1cf6a4455712a0b24bcab0b50bb
+RUN cd /tmp/tflite-micro-esp-examples && cp -r components/tflite-lib /components/
+
 RUN echo "source /opt/esp/idf/export.sh > /dev/null 2>&1" >> ~/.bashrc
 
 ENTRYPOINT [ "/opt/esp/entrypoint.sh" ]
